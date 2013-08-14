@@ -1,6 +1,7 @@
-*.class
+*~
 
-# Package Files #
-*.jar
-*.war
-*.ear
+/eclipse/.metadata
+
+/eclipse/FreeBench/bin
+/eclipse/FreeBench/.settings
+# /eclipse/FreeBench/.classpath
