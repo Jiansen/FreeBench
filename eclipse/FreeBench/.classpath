@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry excluding="src/uk/ac/ed/inf/lfcs/|lib/|src/uk/ac/ed/inf/|src/uk/ac/ed/|src/uk/ac/|src/uk/|src/" kind="src" path=""/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="/home/jiansen/FreeBench/eclipse/FreeBench/lib/commons-codec-1.8.jar"/>
+	<classpathentry kind="lib" path="/home/jiansen/FreeBench/eclipse/FreeBench/lib/gson-2.2.4.jar"/>
+	<classpathentry kind="lib" path="/home/jiansen/FreeBench/eclipse/FreeBench/lib/commons-io-2.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
