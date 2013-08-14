@@ -11,5 +11,5 @@ A Java Benchmarking Tool that runs according to your FREE to update configuratio
 
 ## Features
 * An off-the-shelf Java benchmarking tool.  Download and Run.
-* Configuration is specified in file (templete provided), rather than looking up command-line parameters.
+* Configuration is specified in file (templete provided), rather than in command-line parameters.
 * Open source and extensible work.
