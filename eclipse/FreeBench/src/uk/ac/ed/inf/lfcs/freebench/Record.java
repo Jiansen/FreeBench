@@ -8,7 +8,7 @@ public class Record {
 	String url;	
 	boolean responseRecieved;
 	int responseCode;
-	Date end;
+	Date finish;
 	String response;
 	
 	

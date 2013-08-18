@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -18,38 +19,35 @@ import java.util.concurrent.Future;
 import org.apache.commons.io.IOUtils;
 
 public final class Bench {
-	public static RecordStore run(BenchConfiguration configuration){
-		System.out.println("Running Running");
+	public static RecordStore[] run(BenchConfiguration configuration){
+		System.out.println("Benchmarking on: \n ");
+		for(String url : configuration.multiurls()){
+			System.out.println("\t "+url);
+		}
 		
-		RecordStore store = executeOnce(configuration);
-//		
-//		System.out.println("begin:"+r.start.getTime());
-//		System.out.println("end:"+r.end.getTime());
-//		System.out.println("elapse:"+(r.end.getTime()-r.start.getTime()));		
+		RecordStore[] stores = new RecordStore[configuration.rounds()];
+		for (int i=0; i<configuration.rounds(); i++){
+			stores[i] = executeOnce(configuration, i+1);
+		}
 		
-		return store;
+		return stores;
 	}
 	
 
-	private static RecordStore executeOnce(BenchConfiguration configuration){
+	private static RecordStore executeOnce(BenchConfiguration configuration, int round){
 //		Record r = new Record();
 //System.out.println(configuration.concurrency());		
 		ExecutorService executor = Executors.newFixedThreadPool(configuration.concurrency());
 		RecordStore store = new RecordStore();
 		List<GETRequest> requests = new LinkedList<GETRequest>();
-		for(int i=0; i<configuration.concurrency(); i++){requests.add(new GETRequest(configuration));}		
+		for(int i=0; i<configuration.concurrency(); i++){requests.add(new GETRequest(configuration, "Round_"+round));}		
 		
 		try {
 			List<Future<Record[]>> records = executor.invokeAll(requests);
 			for (Future<Record[]> frs : records){
 				try {
-				Record[] rs = frs.get();
-//				System.out.println(r);
-//				System.out.println("begin:"+r.start.getTime());
-//				System.out.println("end:"+r.end.getTime());
-//				System.out.println("elapse:"+(r.end.getTime()-r.start.getTime()));		
-//				System.out.println();			
-				store.addRecordArray(rs);
+				  Record[] rs = frs.get();	
+				  store.addRecordArray(rs);
 			    } catch (InterruptedException | ExecutionException e) {
 //			    	Record r = new Record();
 //			    	r.responseRecieved=false;
@@ -67,15 +65,17 @@ public final class Bench {
 	 
 	private static class GETRequest implements Callable<Record[]>{
 		BenchConfiguration configuration;
+		String tag;
 
-		public GETRequest(BenchConfiguration configuration) {
+		public GETRequest(BenchConfiguration configuration, String tag) {
 			this.configuration = configuration;
+			this.tag = tag;
 		}			
 		@Override
 	    public Record[] call() {
 			Record[] records = new Record[configuration.requests_per_round()];			
 	    	for (int i=0; i<configuration.requests_per_round(); i++){
-	    		records[i] = fetchonce("haha",configuration);		    		
+	    		records[i] = fetchonce(tag,configuration);		    		
 	    	}
 	    	return records;
 	    }
@@ -85,27 +85,47 @@ public final class Bench {
 		Record record = new Record(tag);
 		InputStream is = null;
         try {					        	
-            // fetch result
-            URL url = new URL(configuration.url());
+            // fetch result        	
+            URL url;
+            
+            int num_url =configuration.multiurls().length; 
+            if(num_url==0){
+            	url = new URL(configuration.url());            	
+            }else{
+            	int ri =  (new Random()).nextInt(num_url);
+//System.out.println(ri);            	
+            	url = new URL(configuration.multiurls()[ri]);
+            }
+            
+
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(15000 /* milliseconds */);
-            conn.setConnectTimeout(15000 /* milliseconds */);
+            conn.setReadTimeout(10000 /* milliseconds */);
+            conn.setConnectTimeout(10000 /* milliseconds */);
 
             conn.setDoOutput(true);
             conn.setRequestMethod("GET");
-
+            
+//String host = url.getHost();
+//InetAddress address = InetAddress.getByName(host);
+//String ip = address.getHostAddress();            
+            
+//System.out.println("made connection to: " + ip);
             record.start = new Date();
             int responsecode = conn.getResponseCode();
-            record.responseCode = responsecode;
-            record.end = new Date();
+            record.finish = new Date();
             if (responsecode == HttpURLConnection.HTTP_OK) {
+                record.responseCode = responsecode;
+                record.responseRecieved = true;
             	// Convert the InputStream into a string
             	is = conn.getInputStream();
-            	record.response = readIt(is);            	
+            	record.response = readIt(is);  
+//            	System.out.println("hello");
+            }else{
+            	System.out.println(responsecode);
             }
         }catch(Exception e) {
         	e.printStackTrace();
-        	record.end = new Date();
+        	record.finish = new Date();
         	record.responseRecieved=false;
         }
 //System.out.println(record.responseCode);	//        
