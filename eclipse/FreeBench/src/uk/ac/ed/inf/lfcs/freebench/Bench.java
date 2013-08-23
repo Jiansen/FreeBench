@@ -27,6 +27,7 @@ public final class Bench {
 		
 		RecordStore[] stores = new RecordStore[configuration.rounds()];
 		for (int i=0; i<configuration.rounds(); i++){
+			System.out.println("Round "+(i+1)+" ...");
 			stores[i] = executeOnce(configuration, i+1);
 		}
 		

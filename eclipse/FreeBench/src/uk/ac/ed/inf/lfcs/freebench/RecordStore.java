@@ -66,8 +66,23 @@ public class RecordStore {
 	
 	
 	public float throughput(){
-		int s = this.successrequests();
-		return s*1000.0f/(this.endDate().getTime()-this.beginDate().getTime());
+//		int s = this.successrequests();
+//		return s*1000.0f/(this.endDate().getTime()-this.beginDate().getTime());
+		
+		long sumtime = 0;
+		int successcount = 0;
+		for(Record r : recordes){
+			if(r.responseRecieved){
+				sumtime += (r.finish.getTime() - r.start.getTime());
+				successcount ++;
+			}
+		}
+		if(successcount>0){
+	        return successcount*1000.0f/sumtime;			
+		}else{
+			return 0.0f;
+		}
+		
 	}
 	
 	public float average(){
