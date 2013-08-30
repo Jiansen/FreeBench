@@ -37,18 +37,19 @@ public class RecordReporter {
 			throughputArr[i] = rss[i].throughput();
 		}
 		
-		System.out.println();
-		System.out.println("# of Rounds: "+rss.length);
+		System.out.println();		
+		System.out.println("# of Rounds: "+rss.length);	
+
 		System.out.println("Average Throughput: "+average(throughputArr)+"  trans/sec");
-		System.out.println("std Throughput: "+standarddeviation(throughputArr)+"  trans/sec");
+		System.out.println("std Throughput: "+standarddeviation(throughputArr)+"  trans/sec");			
 	}
 	
 	
 	
 	private static float average(float[] arr){
-		long sum = 0;
+		float sum = 0;
 		for(float f : arr){
-			sum += f;
+			sum += f;		
 		}
 		if(arr.length==0){
 			return 0.0f;	        
@@ -58,7 +59,7 @@ public class RecordReporter {
 	}
 	
 	private static double standarddeviation(float[] arr){
-		long sum = 0;
+		float sum = 0;
 		for(float f : arr){
 			sum += f;
 		}		
