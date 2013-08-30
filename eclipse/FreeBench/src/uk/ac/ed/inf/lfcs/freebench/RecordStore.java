@@ -77,7 +77,7 @@ public class RecordStore {
 				successcount ++;
 			}
 		}
-		if(successcount>0){
+		if(successcount>0){	
 	        return successcount*1000.0f/sumtime;			
 		}else{
 			return 0.0f;

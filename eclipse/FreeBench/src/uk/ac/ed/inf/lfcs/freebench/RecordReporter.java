@@ -3,7 +3,7 @@ package uk.ac.ed.inf.lfcs.freebench;
 import java.util.Date;
 
 public class RecordReporter {	
-	public static void reportStore(RecordStore rs, BenchConfiguration configuration){
+	public static void reportStore(RecordStore rs){
 		Date begin = rs.beginDate();
 		Date end = rs.endDate();	
 		System.out.println();
@@ -31,7 +31,7 @@ public class RecordReporter {
 	}
 	
 	
-	public static void reportSummery(RecordStore[] rss, BenchConfiguration configuration){		
+	public static void reportSummery(RecordStore[] rss){		
 		float[] throughputArr = new float[rss.length];
 		for (int i = 0; i < rss.length; i++){
 			throughputArr[i] = rss[i].throughput();

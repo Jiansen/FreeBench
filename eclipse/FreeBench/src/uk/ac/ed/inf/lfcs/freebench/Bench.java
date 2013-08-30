@@ -21,12 +21,12 @@ import org.apache.commons.io.IOUtils;
 public final class Bench {
 	public static RecordStore[] run(BenchConfiguration configuration){
 		System.out.println("Benchmarking on: \n ");
-		for(String url : configuration.multiurls()){
+		for(String url : configuration.multiurls){
 			System.out.println("\t "+url);
 		}
 		
-		RecordStore[] stores = new RecordStore[configuration.rounds()];
-		for (int i=0; i<configuration.rounds(); i++){
+		RecordStore[] stores = new RecordStore[configuration.rounds];
+		for (int i=0; i<configuration.rounds; i++){
 			System.out.println("Round "+(i+1)+" ...");
 			stores[i] = executeOnce(configuration, i+1);
 		}
@@ -38,10 +38,10 @@ public final class Bench {
 	private static RecordStore executeOnce(BenchConfiguration configuration, int round){
 //		Record r = new Record();
 //System.out.println(configuration.concurrency());		
-		ExecutorService executor = Executors.newFixedThreadPool(configuration.concurrency());
+		ExecutorService executor = Executors.newFixedThreadPool(configuration.concurrency);
 		RecordStore store = new RecordStore();
 		List<GETRequest> requests = new LinkedList<GETRequest>();
-		for(int i=0; i<configuration.concurrency(); i++){requests.add(new GETRequest(configuration, "Round_"+round));}		
+		for(int i=0; i<configuration.concurrency; i++){requests.add(new GETRequest(configuration, "Round_"+round));}		
 		
 		try {
 			List<Future<Record[]>> records = executor.invokeAll(requests);
@@ -74,8 +74,8 @@ public final class Bench {
 		}			
 		@Override
 	    public Record[] call() {
-			Record[] records = new Record[configuration.requests_per_round()];			
-	    	for (int i=0; i<configuration.requests_per_round(); i++){
+			Record[] records = new Record[configuration.requests_per_round];			
+	    	for (int i=0; i<configuration.requests_per_round; i++){
 	    		records[i] = fetchonce(tag,configuration);		    		
 	    	}
 	    	return records;
@@ -89,13 +89,13 @@ public final class Bench {
             // fetch result        	
             URL url;
             
-            int num_url =configuration.multiurls().length; 
+            int num_url =configuration.multiurls.length; 
             if(num_url==0){
-            	url = new URL(configuration.url());            	
+            	url = new URL(configuration.url);            	
             }else{
             	int ri =  (new Random()).nextInt(num_url);
 //System.out.println(ri);            	
-            	url = new URL(configuration.multiurls()[ri]);
+            	url = new URL(configuration.multiurls[ri]);
             }
             
 

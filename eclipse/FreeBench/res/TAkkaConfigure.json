@@ -1,0 +1,11 @@
+{
+    "url": "http://lb-1002311470.eu-west-1.elb.amazonaws.com:9000/json",
+    "multiurls":[
+"http://www.amazon.com",
+"http://www.amazon.com",
+"http://www.amazon.com"
+    ],
+    "requests_per_round": 100,
+    "concurrency": 10,
+    "rounds": 2
+}
