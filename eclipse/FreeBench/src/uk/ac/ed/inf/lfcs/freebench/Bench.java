@@ -117,10 +117,15 @@ public final class Bench {
             if (responsecode == HttpURLConnection.HTTP_OK) {
                 record.responseCode = responsecode;
                 record.responseRecieved = true;
-            	// Convert the InputStream into a string
-            	is = conn.getInputStream();
-            	record.response = readIt(is);  
-//            	System.out.println("hello");
+                
+                if(configuration.download_content){
+                	// Convert the InputStream into a string                
+                	is = conn.getInputStream();
+                	record.response = readIt(is);  
+//                	System.out.println("hello");                	
+                }else{
+                	record.response = "";
+                }
             }else{
             	System.out.println(responsecode);
             }

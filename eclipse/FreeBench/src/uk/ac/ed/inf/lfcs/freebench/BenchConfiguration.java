@@ -11,8 +11,9 @@ public class BenchConfiguration {
 //	
 //	
 //	abstract int rounds(); // n rounds, [requests_per_round() X concurrency()]	
-	String url;
+	String url;	
 	String[] multiurls;	
+	boolean download_content;
 	int requests_per_round;
 	int concurrency;// n tests in parallel		
 	int rounds; // n rounds, [requests_per_round() X concurrency()]		
