@@ -6,6 +6,8 @@ public class TAkkaConfiguration extends BenchConfiguration {
 		this.url = "http://lb-1002311470.eu-west-1.elb.amazonaws.com:9000/json";
 		
 		this.download_content = true;
+		this.connect_timeout = 10000;
+		this.read_timeout = 10000;
 		String[] urls = {
 				"http://www.amazon.com",
 				"http://www.amazon.com",

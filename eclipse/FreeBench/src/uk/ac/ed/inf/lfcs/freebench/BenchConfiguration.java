@@ -14,6 +14,8 @@ public class BenchConfiguration {
 	String url;	
 	String[] multiurls;	
 	boolean download_content;
+	int read_timeout; // milliseconds
+	int connect_timeout; // milliseconds
 	int requests_per_round;
 	int concurrency;// n tests in parallel		
 	int rounds; // n rounds, [requests_per_round() X concurrency()]		

@@ -96,12 +96,11 @@ public final class Bench {
             	int ri =  (new Random()).nextInt(num_url);
 //System.out.println(ri);            	
             	url = new URL(configuration.multiurls[ri]);
-            }
-            
+            }            
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(10000 /* milliseconds */);
-            conn.setConnectTimeout(10000 /* milliseconds */);
+            conn.setReadTimeout(configuration.read_timeout);
+            conn.setConnectTimeout(configuration.connect_timeout);
 
             conn.setDoOutput(true);
             conn.setRequestMethod("GET");
